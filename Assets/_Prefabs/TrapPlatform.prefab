@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1114555011356054780}
   - component: {fileID: 1114555011356054529}
   - component: {fileID: 1114555011356054782}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,9 +94,9 @@ GameObject:
   - component: {fileID: 1114555012252473479}
   - component: {fileID: 1114555012252473476}
   - component: {fileID: 1197684209433647992}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: TrapPlatform
-  m_TagString: Untagged
+  m_TagString: TrapPlatform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

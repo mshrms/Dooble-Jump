@@ -7,6 +7,8 @@ namespace MyEvents
 		public static Action onGameStart;
 		public static Action onGamePause;
 		public static Action onReturnToMainMenu;
+
+		public static Action onButtonSound;
 		//public static Action onControlsChange;
 
 		public static Action onPlayerJump;

@@ -16,6 +16,11 @@ public class MenuButtons : MonoBehaviour
 	{
 		onReturnToMainMenu?.Invoke();
 	}
+
+	public void PlayTheButtonSound()
+	{
+		onButtonSound?.Invoke();
+	}
 	//public void ChangeControls()
 	//{
 	//	onControlsChange?.Invoke();
