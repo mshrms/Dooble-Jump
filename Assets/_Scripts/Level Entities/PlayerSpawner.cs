@@ -36,6 +36,8 @@ public class PlayerSpawner : MonoBehaviour
 			playerInstance = Instantiate(playerPrefab, playerStartPosition, Quaternion.identity);
 
 			gameInitialized = true;
+
+			onPlayerSpawned?.Invoke();
 		}
 	}
 

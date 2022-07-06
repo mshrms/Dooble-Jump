@@ -11,8 +11,8 @@ namespace MyEvents
 		public static Action onButtonSound;
 		//public static Action onControlsChange;
 
+		public static Action onPlayerSpawned;
 		public static Action onPlayerJump;
-		public static Action onPlayerLand;
 
 		public static Action onPlayerDeath;
 	}

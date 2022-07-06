@@ -12,6 +12,9 @@ public enum PlatformType
 
 public class LevelGenerator : MonoBehaviour
 {
+	//доступно для проверок движущихся платформ и появления персонажа с другой стороны экрана
+	[SerializeField] public Vector2 horizontalLevelBorders { get; }
+
 	[SerializeField] private PlatformFactory platformFactory;
 	[SerializeField] private MovingPlatformFactory movingPlatformFactory;
 	[SerializeField] private TrapPlatformFactory trapPlatformFactory;

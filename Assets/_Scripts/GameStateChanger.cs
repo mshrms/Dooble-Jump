@@ -63,11 +63,11 @@ public class GameStateChanger : MonoBehaviour
 		}
 		if (currentGameState == GameState.PauseMenu)
 		{
-			Time.timeScale = 1f;
 			pauseMenu.SetActive(false);
 			playmodeMenu.SetActive(true);
 		}
 
+		Time.timeScale = 1f;
 		currentGameState = GameState.Playmode;
 	}
 }

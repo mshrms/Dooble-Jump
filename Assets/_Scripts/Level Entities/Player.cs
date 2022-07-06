@@ -13,54 +13,86 @@ public class Player : MonoBehaviour
     [SerializeField] private float gravityForce;
     [SerializeField] private float deadZoneOffset;
 
-	private float acceleration;
-    private float currentJumpDuration;
-	private bool wasOnSurface;
+	private float currentSpeed;
+	private bool canJump;
+	private bool fallingDown;
 
 	private void OnEnable()
 	{
-		onPlayerJump += StartJump;
-		onPlayerLand += EndJump;
+		onPlayerJump += Jump;
 	}
 	private void OnDisable()
 	{
-		onPlayerJump -= StartJump;
-		onPlayerLand -= EndJump;
+		onPlayerJump -= Jump;
 	}
 
-	private void OnCollisionEnter(Collision collision)
+	private void Start()
 	{
-		if (collision.gameObject.CompareTag("TrapPlatform"))
+		fallingDown = true;
+		canJump = false;
+	}
+
+	private void Update()
+	{
+		CalculateFall();
+	}
+
+	private void CalculateFall()
+	{
+		if (!canJump)
 		{
-			//trap platform break logic (возможно с передачей столкнувшейся треп платформы в событии, чтобы разрушить именно ее после вызова события)
+			//gravity applying
+			currentSpeed += (gravityForce * Time.deltaTime);
+			Vector3 newPosition = new Vector3(0f, currentSpeed * Time.deltaTime);
+			transform.position += newPosition;
+
+			//highest point
+			if (transform.position.y > HighestJumpPoint)
+			{
+				HighestJumpPoint = transform.position.y;
+			}
+
+			//is falling
+			if (currentSpeed < 0f)
+			{
+				fallingDown = true;
+			}
+			else
+			{
+				fallingDown = false;
+			}
+
+			//death check
+			//if (transform.position.y < (HighestJumpPoint - deadZoneOffset))
+			//{
+			//	onPlayerDeath?.Invoke();
+			//}
 		}
-		onPlayerJump?.Invoke();
 	}
 
-	
-
-	//private void CheckForSurface()
-	//{
-
-	//}
-	private void CheckForDeath()
+	private void OnTriggerEnter(Collider other)
 	{
+		if (fallingDown)
+		{
+			if (other.gameObject.CompareTag("TrapPlatform"))
+			{
+				//trap platform break logic (возможно с передачей столкнувшейся треп платформы в событии, чтобы разрушить именно ее после вызова события)
+			}
 
-	}
-	private IEnumerator CalculateJump()
-	{
-		// if(не на земле) продолжить рассчеты + запоминать высочайшую точку
-		// if(приземлился) закончить рассчеты, выйти из корутины
-		// также проводить рассчеты, не упал ли игрок слишком низко
-		yield return null;
-	}
+			canJump = true;
+			currentSpeed = 0;
 
-	private void StartJump()
-	{
+			onPlayerJump?.Invoke();
+		}
 		
 	}
-	private void EndJump()
+	
+	private void Jump()
 	{
+		Debug.Log("Jump start");
 
+		canJump = false;
+		fallingDown = false;
+		currentSpeed = jumpForce;
 	}
 }
