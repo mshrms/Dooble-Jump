@@ -13,11 +13,13 @@ public class CameraFollow : MonoBehaviour
 	private void OnEnable()
 	{
 		onPlayerSpawned += GetPlayer;
+		onPlayerDeath += ClearPlayer;
 		onReturnToMainMenu += ClearPlayer;
 	}
 	private void OnDisable()
 	{
 		onPlayerSpawned -= GetPlayer;
+		onPlayerDeath -= ClearPlayer;
 		onReturnToMainMenu -= ClearPlayer;
 	}
 

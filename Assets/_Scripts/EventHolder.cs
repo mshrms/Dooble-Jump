@@ -8,13 +8,14 @@ namespace MyEvents
 		public static Action onGamePause;
 		public static Action onReturnToMainMenu;
 
-		public static Action onButtonSound;
-		//public static Action onControlsChange;
+		public static Action onInputModeChange;
+		public static Action onInputModeHasChanged;
 
 		public static Action onPlayerSpawned;
 		public static Action onPlayerJump;
-
 		public static Action onPlayerDeath;
+
+		public static Action<TrapPlatform> onTrapPlatformBreak;
 	}
 }
 

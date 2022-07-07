@@ -2,17 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TiltInputHandler : MonoBehaviour
+public class TiltInputHandler : IInputHandler
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	public InputMode inputMode => InputMode.Tilt;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	public float ReturnHorizontalInput()
+	{
+		float input = Input.acceleration.x;
+		return input;
+	}
 }

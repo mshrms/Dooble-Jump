@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static MyEvents.EventHolder;
+using DG.Tweening;
 
 public class PlayerSpawner : MonoBehaviour
 {
@@ -40,11 +41,13 @@ public class PlayerSpawner : MonoBehaviour
 			onPlayerSpawned?.Invoke();
 		}
 	}
-
 	private void DeletePlayer()
 	{
-		Destroy(playerInstance);
-		playerInstance = null;
+		if (playerInstance != null)
+		{
+			Destroy(playerInstance);
+			playerInstance = null;
+		}
 
 		gameInitialized = false;
 	}
