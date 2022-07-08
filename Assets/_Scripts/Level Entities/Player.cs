@@ -1,16 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using static MyEvents.EventHolder;
 
 public class Player : MonoBehaviour
 {
-	//запоминаем высоту последнего прыжка, и если игрок упал ниже по Y, чем самая высокая точка прыжка минус
-	// оффсет мертвой зоны, то он умер
 	public float HighestJumpPoint { get; private set; }
 
-	[SerializeField] private Transform birdSprite;
+	[SerializeField] private Transform playerSprite;
 	[SerializeField] private float rotateDuration;
 	[SerializeField] private Ease rotateEasing;
 
@@ -20,12 +16,15 @@ public class Player : MonoBehaviour
 	[SerializeField] private float maxHorizontalSpeed;
 	[SerializeField] private float deadZoneOffset;
 
-	private float levelBorder;
+	private float levelWidth;
 	private IInputHandler currentInputHandler;
 	private IInputHandler[] inputHandlers;
 	private float currentSpeed;
 	private bool canJump;
 	private bool fallingDown;
+
+	private bool isFacingRight;
+	private bool oldFacing;
 
 	private void OnEnable()
 	{
@@ -48,7 +47,9 @@ public class Player : MonoBehaviour
 		fallingDown = true;
 		canJump = false;
 
-		levelBorder = FindObjectOfType<LevelGenerator>().LevelBorder;
+		levelWidth = FindObjectOfType<LevelGenerator>().LevelWidth;
+
+		isFacingRight = true;
 	}
 
 	private void InitializeInput()
@@ -69,7 +70,13 @@ public class Player : MonoBehaviour
 	private void Update()
 	{
 		CalculateFall();
-		MovePlayerHorizontally(currentInputHandler.ReturnHorizontalInput() * inputSensitivity);
+
+		float input = currentInputHandler.ReturnHorizontalInput();
+
+		if (input != 0f)
+		{
+			MovePlayerHorizontally(input * inputSensitivity);
+		}
 	}
 
 	private void MovePlayerHorizontally(float horizInput)
@@ -80,25 +87,44 @@ public class Player : MonoBehaviour
 		newHorizPos.x += horizontalSpeed * Time.deltaTime;
 		
 		//level borders teleporting
-		if (newHorizPos.x > levelBorder)
+		if (newHorizPos.x > levelWidth)
 		{
-			newHorizPos.x = -levelBorder;
+			newHorizPos.x = -levelWidth;
 		}
-		if (newHorizPos.x < -levelBorder)
+		if (newHorizPos.x < -levelWidth)
 		{
-			newHorizPos.x = levelBorder;
+			newHorizPos.x = levelWidth;
 		}
 
-		//sprite mirroring
+		//facing detection
 		if (horizInput > 0f)
 		{
-			birdSprite.DOLocalRotate(Vector3.zero, rotateDuration).SetEase(rotateEasing);
+			isFacingRight = true;
 		}
 		else if (horizInput < 0f)
 		{
-			birdSprite.DOLocalRotate(new Vector3(0f, 180f, 0f), rotateDuration).SetEase(rotateEasing);
+			isFacingRight = false;
+			
 		}
 
+		//sprite mirroring if facing changed
+		if (isFacingRight != oldFacing)
+		{
+			switch (isFacingRight)
+			{
+				case true:
+					transform.DOKill();
+					playerSprite.DOLocalRotate(Vector3.zero, rotateDuration).SetEase(rotateEasing);
+					break;
+
+				case false:
+					transform.DOKill();
+					playerSprite.DOLocalRotate(new Vector3(0f, 180f, 0f), rotateDuration).SetEase(rotateEasing);
+					break;
+			}
+		}
+
+		oldFacing = isFacingRight;
 		transform.position = newHorizPos;
 	}
 
@@ -111,7 +137,7 @@ public class Player : MonoBehaviour
 			Vector3 newVertPosition = new Vector3(0f, currentSpeed * Time.deltaTime);
 			transform.position += newVertPosition;
 
-			//highest point
+			//highest point detection
 			if (transform.position.y > HighestJumpPoint)
 			{
 				HighestJumpPoint = transform.position.y;
@@ -168,6 +194,7 @@ public class Player : MonoBehaviour
 				currentInputHandler = inputHandlers[1];
 				PlayerPrefs.SetInt("InputMode", 1);
 				break;
+
 			case InputMode.Touch:
 				currentInputHandler = inputHandlers[0];
 				PlayerPrefs.SetInt("InputMode", 0);
@@ -179,6 +206,6 @@ public class Player : MonoBehaviour
 
 	private void OnDestroy()
 	{
-		birdSprite.transform.DOKill();
+		playerSprite.transform.DOKill();
 	}
 }

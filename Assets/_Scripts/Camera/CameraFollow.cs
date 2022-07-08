@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static MyEvents.EventHolder;
 
@@ -7,6 +5,7 @@ public class CameraFollow : MonoBehaviour
 {
 	[SerializeField] private float yOffset;
 	[SerializeField] [Range(0f,1f)] private float lerpSpeed;
+
 	private Player playerInstance;
 	private bool hasPlayer;
 

@@ -8,10 +8,12 @@ public class MenuButtons : MonoBehaviour
 	{
 		onGameStart?.Invoke();
 	}
+
 	public void PauseGame()
 	{
 		onGamePause?.Invoke();
 	}
+
 	public void GoToMainMenu()
 	{
 		onReturnToMainMenu?.Invoke();

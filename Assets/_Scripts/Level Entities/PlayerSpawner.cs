@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static MyEvents.EventHolder;
-using DG.Tweening;
 
 public class PlayerSpawner : MonoBehaviour
 {

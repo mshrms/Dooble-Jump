@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using static MyEvents.EventHolder;
@@ -24,7 +22,6 @@ public class TrapPlatform : MonoBehaviour
 		if (someTrapPlatform.Equals(this))
 		{
 			AnimateBreak();
-			
 		}
 	}
 
@@ -33,6 +30,7 @@ public class TrapPlatform : MonoBehaviour
 		transform.DOMoveY(transform.position.y + breakMovePosition, breakDuration).SetEase(breakEasing);
 		transform.DOShakeScale(breakDuration).OnComplete(() => DeletePlatform());
 	}
+
 	private void DeletePlatform()
 	{
 		transform.DOKill();

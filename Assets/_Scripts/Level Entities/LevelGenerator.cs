@@ -13,9 +13,9 @@ public enum PlatformType
 public class LevelGenerator : MonoBehaviour
 {
 	//доступно для проверок движущихся платформ и появления персонажа с другой стороны экрана
-	public float LevelBorder { get; private set; }
+	public float LevelWidth { get; private set; }
 
-	[SerializeField] private float horizontalLevelBorder;
+	[SerializeField] private float levelWidth;
 	[SerializeField] private float platformDeleteDistance;
 
 	[SerializeField] private PlatformFactory platformFactory;
@@ -63,7 +63,7 @@ public class LevelGenerator : MonoBehaviour
 
 	private void Awake()
 	{
-		LevelBorder = horizontalLevelBorder;
+		LevelWidth = levelWidth;
 	}
 	private void Start()
 	{
@@ -111,7 +111,6 @@ public class LevelGenerator : MonoBehaviour
 			GenerateRandomPlatform();
 		}
 	}
-
 
 	private void GenerateStartPlatform()
 	{

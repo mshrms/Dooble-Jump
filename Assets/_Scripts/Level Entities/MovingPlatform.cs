@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
@@ -46,15 +44,15 @@ public class MovingPlatform : MonoBehaviour
 
     private void MoveHorizontally()
 	{
-        float levelBorder = FindObjectOfType<LevelGenerator>().LevelBorder;
-        levelBorder -= horizontalBorderOffset;
+        float levelWidth = FindObjectOfType<LevelGenerator>().LevelWidth;
+        levelWidth -= horizontalBorderOffset;
 
         float speed = Random.Range(movingSpeed.x, movingSpeed.y);
 
-        transform.DOMoveX(levelBorder, speed)
+        transform.DOMoveX(levelWidth, speed)
             .SetEase(easing).OnComplete(() =>
         {
-            transform.DOMoveX(-levelBorder, speed)
+            transform.DOMoveX(-levelWidth, speed)
             .SetEase(easing).OnComplete(() => MoveHorizontally());
         });
     }

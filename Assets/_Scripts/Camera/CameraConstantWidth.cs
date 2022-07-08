@@ -3,7 +3,7 @@ using UnityEngine;
 public class CameraConstantWidth : MonoBehaviour
 {
     [SerializeField] private Vector2 defaultResolution = new Vector2(720, 1280);
-    [SerializeField] [Range(0f, 1f)] private float WidthOrHeight = 0;
+    [SerializeField][Range(0f, 1f)] private float WidthOrHeight = 0;
     
     private float horizontalFov;
     private Camera camComponent;

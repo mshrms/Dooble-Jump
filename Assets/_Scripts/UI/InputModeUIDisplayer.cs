@@ -1,13 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static MyEvents.EventHolder;
 using TMPro;
+using static MyEvents.EventHolder;
 
 public class InputModeUIDisplayer : MonoBehaviour
 {
 	[SerializeField] TMP_Text currentInputModeText;
 	[SerializeField] TMP_Text changeInputModeButtonText;
+
 	private void OnEnable()
 	{
 		onInputModeHasChanged += ShowInputModeInUI;

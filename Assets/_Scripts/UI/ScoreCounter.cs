@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Text;
 using TMPro;
 using static MyEvents.EventHolder;
-using System.Text;
 
 public class ScoreCounter : MonoBehaviour
 {

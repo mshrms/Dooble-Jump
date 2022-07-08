@@ -54,6 +54,7 @@ public class GameStateChanger : MonoBehaviour
 	private void ChangeToPauseMenu()
 	{
 		Time.timeScale = 0f;
+
 		playmodeMenu.SetActive(false);
 		pauseMenu.SetActive(true);
 		gameOverMenu.SetActive(false);
@@ -78,7 +79,9 @@ public class GameStateChanger : MonoBehaviour
 		}
 
 		playmodeMenu.SetActive(true);
+
 		Time.timeScale = 1f;
+
 		currentGameState = GameState.Playmode;
 	}
 	private void ChangeToGameOver()

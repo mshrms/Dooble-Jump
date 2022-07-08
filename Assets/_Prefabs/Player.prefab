@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 247942487002641039}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 0.3}
+  m_LocalScale: {x: 1, y: 1, z: 0.20000002}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3403077267355174396}
@@ -46,8 +46,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.7, y: 0.4, z: 1}
-  m_Center: {x: -0.05, y: -0.3, z: 0}
+  m_Size: {x: 0.3, y: 0.2, z: 1}
+  m_Center: {x: 0, y: -0.25, z: 0}
 --- !u!54 &373336633569640090
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 092e1b07d01fd4d4eadef37f70dd0fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  birdSprite: {fileID: 3403077267355174396}
+  playerSprite: {fileID: 3403077267355174396}
   rotateDuration: 0.2
   rotateEasing: 3
   jumpForce: 10
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 2588063860932000660}
   - component: {fileID: 8097768099218235579}
   m_Layer: 7
-  m_Name: Bird
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -110,7 +110,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2360323544385582601}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.1, z: -2}
+  m_LocalPosition: {x: 0, y: 0.05, z: -0.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
