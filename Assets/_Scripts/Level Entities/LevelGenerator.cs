@@ -18,9 +18,7 @@ public class LevelGenerator : MonoBehaviour
 	[SerializeField] private float levelWidth;
 	[SerializeField] private float platformDeleteDistance;
 
-	[SerializeField] private PlatformFactory platformFactory;
-	[SerializeField] private MovingPlatformFactory movingPlatformFactory;
-	[SerializeField] private TrapPlatformFactory trapPlatformFactory;
+	[SerializeField] ObjectPool objectPool;
 
 	[SerializeField] private PlatformType[] genProbability;
 	[SerializeField] private int desiredPlatformCount;
@@ -114,7 +112,9 @@ public class LevelGenerator : MonoBehaviour
 
 	private void GenerateStartPlatform()
 	{
-		Platform startPlatformInstance = platformFactory.GetNewInstance(startPlatformPosition);
+		Platform startPlatformInstance = objectPool.platforms.Get();
+		startPlatformInstance.transform.position = startPlatformPosition;
+
 		generatedPlatforms.Add(startPlatformInstance.gameObject);
 
 		nextPosition = startPlatformPosition;
@@ -138,15 +138,19 @@ public class LevelGenerator : MonoBehaviour
 		switch (newPlatformType)
 		{
 			case PlatformType.Platform:
-				newPlatformInstance = platformFactory.GetNewInstance(nextPosition).gameObject;
+				newPlatformInstance = objectPool.platforms.Get().gameObject;
+				newPlatformInstance.transform.position = nextPosition;
 				break;
 
 			case PlatformType.MovingPlatform:
-				newPlatformInstance = movingPlatformFactory.GetNewInstance(nextPosition).gameObject;
+				newPlatformInstance = objectPool.movingPlatforms.Get().gameObject;
+				newPlatformInstance.transform.position = nextPosition;
 				break;
 
 			case PlatformType.TrapPlatform:
-				newPlatformInstance = trapPlatformFactory.GetNewInstance(nextPosition).gameObject;
+				newPlatformInstance = objectPool.trapPlatforms.Get().gameObject;
+				newPlatformInstance.transform.position = nextPosition;
+
 				AddSafetyPlatform(nextPosition);
 				break;
 
@@ -166,7 +170,8 @@ public class LevelGenerator : MonoBehaviour
 			Random.Range(safetyPlatformVerticalPosRange.x, safetyPlatformVerticalPosRange.y),
 			0f);
 
-		GameObject safetyPlatformInstance = platformFactory.GetNewInstance(position).gameObject;
+		GameObject safetyPlatformInstance = objectPool.platforms.Get().gameObject;
+		safetyPlatformInstance.transform.position = position;
 
 		generatedPlatforms.Add(safetyPlatformInstance);
 	}
@@ -180,7 +185,8 @@ public class LevelGenerator : MonoBehaviour
 			generatedPlatforms.Remove(platformToDelete);
 
 			platformToDelete.transform.DOKill();
-			Destroy(platformToDelete);
+
+			ChooseCorrectPoolOnDestroy(platformToDelete);
 		}
 	}
 	private void ClearAllPlatforms()
@@ -190,7 +196,7 @@ public class LevelGenerator : MonoBehaviour
 		foreach (var platform in generatedPlatforms)
 		{
 			platform.transform.DOKill();
-			Destroy(platform);
+			ChooseCorrectPoolOnDestroy(platform);
 		}
 		generatedPlatforms.Clear();
 
@@ -200,5 +206,23 @@ public class LevelGenerator : MonoBehaviour
 	private void DeleteBrokenTrapPlatform(TrapPlatform platformToDelete)
 	{
 		generatedPlatforms.Remove(platformToDelete.gameObject);
+	}
+
+	private void ChooseCorrectPoolOnDestroy(GameObject platformToDelete)
+	{
+		switch (platformToDelete.tag)
+		{
+			case "Platform":
+				objectPool.platforms.Release(platformToDelete.GetComponent<Platform>());
+				break;
+
+			case "MovingPlatform":
+				objectPool.movingPlatforms.Release(platformToDelete.GetComponent<MovingPlatform>());
+				break;
+
+			case "TrapPlatform":
+				objectPool.trapPlatforms.Release(platformToDelete.GetComponent<TrapPlatform>());
+				break;
+		}
 	}
 }

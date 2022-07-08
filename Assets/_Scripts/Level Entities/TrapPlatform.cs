@@ -8,6 +8,8 @@ public class TrapPlatform : MonoBehaviour
 	[SerializeField] private float breakDuration;
 	[SerializeField] private Ease breakEasing;
 
+	ObjectPool objectPool;
+
 	private void OnEnable()
 	{
 		onTrapPlatformBreak += CompareWithBrokenPlatform;
@@ -15,6 +17,11 @@ public class TrapPlatform : MonoBehaviour
 	private void OnDisable()
 	{
 		onTrapPlatformBreak -= CompareWithBrokenPlatform;
+	}
+
+	private void Start()
+	{
+		objectPool = FindObjectOfType<ObjectPool>();
 	}
 
 	private void CompareWithBrokenPlatform(TrapPlatform someTrapPlatform)
@@ -34,6 +41,6 @@ public class TrapPlatform : MonoBehaviour
 	private void DeletePlatform()
 	{
 		transform.DOKill();
-		Destroy(this.gameObject);
+		objectPool.trapPlatforms.Release(this);
 	}
 }

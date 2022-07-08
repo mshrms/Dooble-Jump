@@ -4,9 +4,9 @@ public class BaseFactory<T> : MonoBehaviour where T : MonoBehaviour
 {
 	public T prefab;
 
-	public T GetNewInstance(Vector3 position)
+	public T GetNewInstance()
 	{
-		var instance = Instantiate(prefab, position, Quaternion.identity);
+		var instance = Instantiate(prefab);
 		return instance;
 	}
 }

@@ -12,26 +12,30 @@ public class MovingPlatform : MonoBehaviour
     private float startPos;
     private float endPos;
 
-    void Start()
+    void OnEnable()
     {
-        if (Random.Range(0f,1f) > verticalOrHorizontalProbability)
+        if (Random.Range(0f, 1f) > verticalOrHorizontalProbability)
 		{
-            startPos = transform.position.y;
-
-            endPos = startPos;
-            endPos += verticalMovementRange;
-
-            MoveVertically();
-            
+            Invoke("MoveVertically", 0.3f);
         }
         else
 		{
             MoveHorizontally();
         }
     }
+    private void OnDisable()
+    {
+        transform.DOKill();
+    }
 
     private void MoveVertically()
     {
+        startPos = transform.position.y;
+
+        endPos = startPos;
+        endPos += verticalMovementRange;
+
+
         float speed = Random.Range(movingSpeed.x, movingSpeed.y);
 
         transform.DOMoveY(endPos, speed)
@@ -56,9 +60,4 @@ public class MovingPlatform : MonoBehaviour
             .SetEase(easing).OnComplete(() => MoveHorizontally());
         });
     }
-
-    private void OnDestroy()
-	{
-        transform.DOKill();
-	}
 }
