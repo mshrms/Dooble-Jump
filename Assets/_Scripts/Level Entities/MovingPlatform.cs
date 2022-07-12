@@ -11,6 +11,7 @@ public class MovingPlatform : MonoBehaviour
 
     private float startPos;
     private float endPos;
+    private Transform platformTransform;
 
     void OnEnable()
     {
@@ -25,12 +26,17 @@ public class MovingPlatform : MonoBehaviour
     }
     private void OnDisable()
     {
-        transform.DOKill();
+        platformTransform.DOKill();
     }
 
-    private void MoveVertically()
+	private void Awake()
+	{
+        platformTransform = transform;
+	}
+
+	private void MoveVertically()
     {
-        startPos = transform.position.y;
+        startPos = platformTransform.position.y;
 
         endPos = startPos;
         endPos += verticalMovementRange;
@@ -38,10 +44,10 @@ public class MovingPlatform : MonoBehaviour
 
         float speed = Random.Range(movingSpeed.x, movingSpeed.y);
 
-        transform.DOMoveY(endPos, speed)
+        platformTransform.DOMoveY(endPos, speed)
             .SetEase(easing).OnComplete(() =>
             {
-                transform.DOMoveY(startPos, speed)
+                platformTransform.DOMoveY(startPos, speed)
                 .SetEase(easing).OnComplete(() => MoveVertically());
             });
     }
@@ -53,10 +59,10 @@ public class MovingPlatform : MonoBehaviour
 
         float speed = Random.Range(movingSpeed.x, movingSpeed.y);
 
-        transform.DOMoveX(levelWidth, speed)
+        platformTransform.DOMoveX(levelWidth, speed)
             .SetEase(easing).OnComplete(() =>
         {
-            transform.DOMoveX(-levelWidth, speed)
+            platformTransform.DOMoveX(-levelWidth, speed)
             .SetEase(easing).OnComplete(() => MoveHorizontally());
         });
     }

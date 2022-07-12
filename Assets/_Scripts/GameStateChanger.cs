@@ -33,6 +33,12 @@ public class GameStateChanger : MonoBehaviour
 		onPlayerDeath -= ChangeToGameOver;
 	}
 
+	void Awake()
+	{
+		Application.targetFrameRate = 120;
+		QualitySettings.vSyncCount = 0;
+	}
+
 	private void Start()
 	{
 		currentGameState = GameState.MainMenu;

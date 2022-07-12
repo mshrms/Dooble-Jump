@@ -8,6 +8,7 @@ public class CameraFollow : MonoBehaviour
 
 	private Player playerInstance;
 	private bool hasPlayer;
+	private Transform camTransform;
 
 	private void OnEnable()
 	{
@@ -20,6 +21,11 @@ public class CameraFollow : MonoBehaviour
 		onPlayerSpawned -= GetPlayer;
 		onPlayerDeath -= ClearPlayer;
 		onReturnToMainMenu -= ClearPlayer;
+	}
+
+	private void Start()
+	{
+		camTransform = transform;
 	}
 
 	private void GetPlayer()
@@ -42,15 +48,15 @@ public class CameraFollow : MonoBehaviour
 	{
 		if (hasPlayer)
 		{
-			float newPos = Mathf.Lerp(transform.position.y, playerInstance.HighestJumpPoint + yOffset, lerpSpeed);
+			float newPos = Mathf.Lerp(camTransform.position.y, playerInstance.HighestJumpPoint + yOffset, lerpSpeed);
 			SetCamYPos(newPos);
 		}
 	}
 
 	private void SetCamYPos(float yPos)
 	{
-		Vector3 newPos = transform.position;
+		Vector3 newPos = camTransform.position;
 		newPos.y = yPos;
-		transform.position = newPos;
+		camTransform.position = newPos;
 	}
 }

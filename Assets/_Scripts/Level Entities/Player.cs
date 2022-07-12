@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
 
 	private bool isFacingRight;
 	private bool oldFacing;
+	private Transform playerTransform;
 
 	private void OnEnable()
 	{
@@ -50,6 +51,8 @@ public class Player : MonoBehaviour
 		levelWidth = FindObjectOfType<LevelGenerator>().LevelWidth;
 
 		isFacingRight = true;
+
+		playerTransform = transform;
 	}
 
 	private void InitializeInput()
@@ -83,7 +86,7 @@ public class Player : MonoBehaviour
 	{
 		float horizontalSpeed = Mathf.Clamp(horizInput, -maxHorizontalSpeed, maxHorizontalSpeed);
 
-		Vector3 newHorizPos = transform.position;
+		Vector3 newHorizPos = playerTransform.position;
 		newHorizPos.x += horizontalSpeed * Time.deltaTime;
 		
 		//level borders teleporting
@@ -113,19 +116,19 @@ public class Player : MonoBehaviour
 			switch (isFacingRight)
 			{
 				case true:
-					transform.DOKill();
+					playerTransform.DOKill();
 					playerSprite.DOLocalRotate(Vector3.zero, rotateDuration).SetEase(rotateEasing);
 					break;
 
 				case false:
-					transform.DOKill();
+					playerTransform.DOKill();
 					playerSprite.DOLocalRotate(new Vector3(0f, 180f, 0f), rotateDuration).SetEase(rotateEasing);
 					break;
 			}
 		}
 
 		oldFacing = isFacingRight;
-		transform.position = newHorizPos;
+		playerTransform.position = newHorizPos;
 	}
 
 	private void CalculateFall()
@@ -135,12 +138,12 @@ public class Player : MonoBehaviour
 			//gravity applying
 			currentSpeed += (gravityForce * Time.deltaTime);
 			Vector3 newVertPosition = new Vector3(0f, currentSpeed * Time.deltaTime);
-			transform.position += newVertPosition;
+			playerTransform.position += newVertPosition;
 
 			//highest point detection
-			if (transform.position.y > HighestJumpPoint)
+			if (playerTransform.position.y > HighestJumpPoint)
 			{
-				HighestJumpPoint = transform.position.y;
+				HighestJumpPoint = playerTransform.position.y;
 			}
 
 			//is falling
@@ -154,7 +157,7 @@ public class Player : MonoBehaviour
 			}
 
 			//death check
-			if (transform.position.y < (HighestJumpPoint - deadZoneOffset))
+			if (playerTransform.position.y < (HighestJumpPoint - deadZoneOffset))
 			{
 				onPlayerDeath?.Invoke();
 			}
